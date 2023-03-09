@@ -1,0 +1,97 @@
+server:
+  port: ${port:8888}
+  servlet:
+    context-path: "/"
+  tomcat.threads.max: 1000
+  http2:
+    enabled: true
+  # ssl:
+  #   key-store: /opt/tcbs/cert/tcbs.keystore
+  #   key-store-password: tcbs@123
+  #   key-store-type: pkcs12
+app:
+  config:
+    scheduler:
+      delay-string: 3600000
+  kafka:
+    consumer:
+      first-consume-topic: notify.flexsync.sysvar
+    producer:
+      first-produce-topic: notify.flexsync.sysvar
+  file:
+    watcher:
+      stp: D:\FileWatcher
+    template:
+      stp: D:\Template\
+spring:
+  datasource:
+    url: 'jdbc:oracle:thin:@10.82.71.138:1521/orcl'
+    username: BOSIT
+    password: Tcbs1234
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 10
+      maximum-pool-size: 300
+      idle-timeout: 10000
+      max-lifetime: 1000
+      auto-commit: true
+  second-datasource:
+    url: 'jdbc:oracle:thin:@10.82.132.160:1521/orcl'
+    username: HOSTUAT
+    password: ZgoHdas$1974
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 10
+      maximum-pool-size: 300
+      idle-timeout: 10000
+      max-lifetime: 1000
+      auto-commit: true
+  third-datasource:
+    url: 'jdbc:oracle:thin:@10.82.71.11:1521/orcl'
+    username: BO
+    password: Tcbs1234
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 10
+      maximum-pool-size: 300
+      idle-timeout: 10000
+      max-lifetime: 1000
+      auto-commit: true
+  first-jpa-datasource:
+    jpa:
+      database-platform: org.hibernate.dialect.Oracle12cDialect
+      open-in-view: false
+      properties:
+        hibernate:
+          proc.param_null_passing: true
+  second-jpa-datasource:
+    jpa:
+      database-platform: org.hibernate.dialect.Oracle12cDialect
+      open-in-view: false
+      properties:
+        hibernate:
+          proc.param_null_passing: true
+  third-jpa-datasource:
+    jpa:
+      database-platform: org.hibernate.dialect.Oracle12cDialect
+      open-in-view: false
+      properties:
+        hibernate:
+          proc.param_null_passing: true
+  kafka:
+    bootstrap-servers: ${ENV_KAFKA_SERVERS:10.82.69.129:9092,10.82.69.237:9092,10.82.69.166:9092}
+    consumer:
+      group-id: flexmono
+      max-poll-records: 500
+      max-poll-interval-ms: 300000
+      auto-start-up: true
+    properties:
+      security:
+        protocol: SASL_PLAINTEXT
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username=${ENV_KAFKA_USERNAME:flexmono} password=${ENV_KAFKA_PASSWORD:Tcbs1234};
